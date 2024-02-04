@@ -1,0 +1,204 @@
+
+AUTOMATION 1 :- IF ELSE BLOCK WITH JFROG REST API
+
+maven gives o/p = .jar or .war file
+placed in central repository which is called -> JFROG , ARTIFATORY 
+JFROG is repository where your application binary file are placed or stored
+this script is executed in pipeline
+
+CICD=true       true value assigne to variable CICD
+WORKSPACE=/apps/opt/users/     --> Workspace is folder in linux   (value assigned to variable)
+JOB_BASE_NAME=Test_demo
+
+if [[ $CICD == true ]]
+Then
+echo "CICD pipeline check"
+
+file="${WORKSPACE}/html/basic_report.html"   #here in workspace /html/basic_report.htlm (workspace with html or
+                                                             basic_report.jar and basic_report.war will come )
+
+REPORTNAME=${JOB_BASE_NAME}_${BUILD_NUMBER}    => Job name coming from Jenkins environment varaiable 
+                                                 => example shown below Test_demo_10 
+                                                 (tes_demo is Job base name ) 10 is build number
+
+
+echo "CICD Check starting"
+
+if [[ -f $file ]]; then     => -f to check file is present are not -f is varaiable  -a check variable -x
+
+      echo "testReport file found sending to artifactory"    -T target 
+        curl -H -X-Jfrog-Art-Api:Token -T $file https://oneartifactorycloud/artifactory/CICD/Reports/$REPORTNAME.html
+        curl -H -X-Jfrog-Art-Api:Token -T $file https://oneartifactorycloud/artifactory/CICD/Reports/$REPORTNAME.html
+
+#Here we are using Curl to sending the report to target artifactory 
+
+#we are using Curl two time sending two files !!! how many file you want send you can add curl based on that
+         
+
+#-H is for passing header (user and pass  -u and -p ) or application type (app.json or app.text or cookies)
+#-X is for Jfrog Api token 
+#-T identify the target path
+
+-H,-X,-T are parameters
+                else
+                    echo "testReport not found"
+fi
+fi
+
+==========================================================================================================================
+
+AUTOMATION 2 :-    FOR LOOP With Jira Rest API
+-----------------------------------------------
+example
+
+count=0
+for x in $(cat logfile.txt)
+do
+    echo "Line $xcount $x"
+done
+
+
+Real time example 
+
+READ -Some data from text file
+Read 1000's of IP address from text file
+
+for ip in $(cat ip.txt)      or may be name and version avaiable in file updating in Jira using CRUL shell script
+do
+    curl -u GITLAB:Token -X PUT --data '{"update":{"labels":[{"add":"'"$TEAMNAME-$VERSION"'"}]}}' --header 
+                                                                 "Content-Type:application/json"
+ https://jira.com/rest/api/2/issue/2341
+
+    curl -u GITLAB:Token -X PUT --data '{"update":{"comments":[{"add":{"body":"'"$version"'"}}]}}' --header 
+                                                                  "Content-Type/json
+  https://jira.com/rest/api/2/issue/2341
+
+                             
+-d data (send some from one place to database) -d updating the data (Putting the data with REST API)
+-X type of request we are hitting (PUT,..)
+-U username and password is Token    or -u and -p password and here GITLAB is username -u  
+PUT is updating existing content in the database
+
+===========================================================================================================================
+
+AUTOMATION 3 :- ARRAY DECLARATION TO CHECK JAR PROCESS
+-----------------------------------------------------------
+
+Linux server :- 10 Application 
+1st - hello service 2nd Hi service 3rd Name service 4th Manger service 5th team service
+
+Asking to check which service is getting down give me the count 
+Tell me for one service how many Jar file is running
+
+Hello service has differnet version 1.1 , 1.2, 1.3 running in single server ----> Usage will me more
+We have to kill service with some version running to reduce uasge also avoid on unneccasery deployment
+
+We will use ARRAY
+
+#!/bin/bash
+array=(helloservice nameservice managementservice teamservice)
+for line in "$(array[@])"
+do
+  COUNT='ps -ef | grep helloservice | grep -v grep | wc -l'
+  Max=2
+  echo $line 
+  echo $COUNT
+    if [ $COUNT -gt $Max ]; 
+then
+   echo $line 
+
+SKipping to learn later difficult to understand
+
+===========================================================================================================================
+
+AUTOMATION 4 :- Archive the Data with Find/Mtime/Tar/Name Command
+----------------------------------------------------------------------
+
+cd /apps/logs/backup.txt
+
+find . -type f -mtime +7-exec mv '{}' /apps/logs/Log_Backup \;
+
+#find . find all in with (type f to find files) -mtime modified 7 days file send to -exec to mv file to log backup path
+
+find /apps/logs/Log_backup -type f -name '*log*' > include-file
+
+tar czf $(hostname)_$(date '+%Y%d%m%H%M%S).tar.gz -T include-file
+
+# we can remove some file if not needed so we write based on script to remove file from folder
+
+find -type f -name '*log*' rm -rf {} /;
+find -type f -mtime +3 -name '*tar.gz' -exec rm '{}' \;
+exit
+
+========================================================================================================================
+
+AUTOMATION 5 :-  Playing with Dates And While loop 
+-------------    -------------------------------------
+
+ONE=14
+
+dataset_date='date'    => here required to use $(date) to call system defined varaible
+
+fourteendaysold='date -d "$dataset_date - $ONE days" +%F'
+
+TWO=7
+
+dataset_date='date'
+
+sevendaysold='date -d "$dateset_date - $two days" +%F'
+
+echo $sevendaysold
+
+date1='echo $sevendaysold | sed 's/-//g''
+
+==========================================================================================================================
+
+AUTOMATION 6 - SendEmail to Team
+
+
+Here Hellowservice running with 3 process or version reduce to run two service reduction of usage
+
+/usr/sbin/sendemail -i <<           user /binary folder / sendemail is software / -i interactive mode -t start of email
+
+subject : $1 server process status
+
+From : xyz@mail.com
+to:name@mail.com
+
+
+Hi team,
+Please check for $1 service in TEST server which has $3
+
+process running with below list of KIT IDs $2
+
+Regards,
+name
+MESSAGE_END
+
+Here in linux we need to install binary email utility to send mail from linux server
+Required to follow some security as well to send secure tunnel to destination
+==========================================================================================================================
+
+Automation 8 : creating a HTML file saved
+
+
+
+
+=========================================================================================================================
+
+Automation 9 : Sonar / GitLab Rest API
+
+
+
+=========================================================================================================================
+
+Automation 10 : To check the process of jar
+
+
+========================================================================================================================
+
+
+
+
+
+
